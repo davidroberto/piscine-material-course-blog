@@ -1,4 +1,6 @@
-{% include '_header.html.twig' %}
+{% extends 'base.html.twig' %}
+
+{% block main %}
 
     {% if article.isPublished %}
         <article class="article-single">
@@ -9,4 +11,4 @@
         </article>
     {% endif %}
 
-{% include '_footer.html.twig' %}
+{% endblock %}

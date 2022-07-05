@@ -1,17 +1,17 @@
-{% include '_header.html.twig' %}
+{% extends 'base.html.twig' %}
 
-<section class="articles">
-    {% for article in lastArticles %}
+{% block main %}
+    <section class="articles">
+        {% for article in lastArticles %}
 
-        {% if article.isPublished %}
-            <article class="article">
-                <img class="article-img" src="{{ article.image }}" alt="{{ article.title }}">
-                <h1>{{ article.title }}</h1>
-                <a href="{{ path('show_article', {'id': article.id }) }}">Clique j't'ai dit</a>
-            </article>
-        {% endif %}
+            {% if article.isPublished %}
+                <article class="article">
+                    <img class="article-img" src="{{ article.image }}" alt="{{ article.title }}">
+                    <h1>{{ article.title }}</h1>
+                    <a href="{{ path('show_article', {'id': article.id }) }}">Clique j't'ai dit</a>
+                </article>
+            {% endif %}
 
-    {% endfor %}
-</section>
-
-{% include '_footer.html.twig' %}
+        {% endfor %}
+    </section>
+{% endblock %}

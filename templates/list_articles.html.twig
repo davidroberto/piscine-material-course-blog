@@ -1,4 +1,6 @@
-{% include '_header.html.twig' %}
+{% extends 'base.html.twig' %}
+
+{% block main %}
 
 <section class="articles">
 
@@ -15,4 +17,4 @@
     {% endfor %}
 </section>
 
-{% include '_footer.html.twig' %}
+{% endblock %}
