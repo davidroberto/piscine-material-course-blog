@@ -5,7 +5,9 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    {% block title %}
+        <title>Blog La Piscine</title>
+    {% endblock %}
     <link rel="stylesheet" href="{{ asset('style.css') }}">
 </head>
 <body>
@@ -20,6 +22,7 @@
 <main>
 
     {% block main %}
+        <img src="https://static.actu.fr/uploads/2018/11/Chrsitine-Boutin-960x640.jpg" alt="">
     {% endblock %}
 
 </main>
