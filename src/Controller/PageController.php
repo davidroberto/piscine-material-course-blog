@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Utility\StringUtility;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -53,6 +54,16 @@ class PageController extends AbstractController
         ];
 
         $lastArticles = array_slice($articles, 1, 3);
+
+        $titlePage = "La page home";
+
+        // je créé une nouvelle instance de classe StringUtility
+        // car sans ça je ne peux pas utiliser les méthodes de la classe StringUtility
+        $stringUtility = new StringUtility();
+
+        $titlePageReversed = $stringUtility->reverseString($titlePage);
+
+
 
         return $this->render('home.html.twig', [
             'lastArticles' => $lastArticles
