@@ -27,11 +27,19 @@ class ArticleController extends AbstractController
         $article = $articleRepository->find(1);
 
         dd($article);
-
-
-
-
     }
+
+    /**
+     * @Route("/articles", name="articles")
+     */
+    public function listArticles(ArticleRepository $articleRepository)
+    {
+        $articles = $articleRepository->findAll();
+
+        dd($articles);
+    }
+
+
 
     /**
      * @Route("insert-article", name="insert_article")
