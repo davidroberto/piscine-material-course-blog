@@ -7,6 +7,7 @@ use App\Entity\Article;
 use App\Repository\ArticleRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ArticleController extends AbstractController
@@ -70,6 +71,28 @@ class ArticleController extends AbstractController
         $entityManager->flush();
 
         dump($article); die;
+    }
+
+    /**
+     * @Route("/articles/delete/{id}", name="delete_article")
+     */
+    public function deleteArticle($id, ArticleRepository $articleRepository, EntityManagerInterface $entityManager)
+    {
+        // je récupère l'article en fonction de l'id dans l'url
+        $article = $articleRepository->find($id);
+
+        // je vérifie que la variable $article ne contient
+        // pas null, donc que l'article existe en bdd
+        if (!is_null($article)) {
+            // j'utilise l'entity manager pour supprimer l'article
+            $entityManager->remove($article);
+            $entityManager->flush();
+
+            return new Response('supprimé');
+        } else {
+            return new Response('déjà supprimé');
+        }
+
     }
 
 }
