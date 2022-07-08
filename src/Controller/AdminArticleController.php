@@ -7,6 +7,7 @@ use App\Entity\Article;
 use App\Repository\ArticleRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -26,7 +27,6 @@ class AdminArticleController extends AbstractController
         // dans la table associée
         // la méthode permet de récupérer un élément par rapport à son id
         $article = $articleRepository->find($id);
-
 
 
         return $this->render('admin/show_article.html.twig', [
@@ -52,29 +52,37 @@ class AdminArticleController extends AbstractController
     /**
      * @Route("/admin/insert-article", name="admin_insert_article")
      */
-    public function insertArticle(EntityManagerInterface $entityManager)
+    public function insertArticle(EntityManagerInterface $entityManager, Request $request)
     {
-        // je créé une instance de la classe Article (classe d'entité)
-        // dans le but de créer un nouvel article dans ma bdd (table article)
+        $title = $request->query->get('title');
+        $content = $request->query->get('content');
 
-        $article = new Article();
+        if (!empty($title) &&
+            !empty($content)
+        ) {
+            // je créé une instance de la classe Article (classe d'entité)
+            // dans le but de créer un nouvel article dans ma bdd (table article)
+            $article = new Article();
 
-        // j'utilise les setters du titre, du contenu etc
-        // pour mettre les données voulues pour le titre, le contenu etc
-        $article->setTitle("Chat mignon");
-        $article->setContent("ouuuh qu'il est troumignoninou ce petit chat. Et si je lui roulais dessus avec mon SUV");
-        $article->setPublishedAt(new \DateTime('NOW'));
-        $article->setIsPublished(true);
+            // j'utilise les setters du titre, du contenu etc
+            // pour mettre les données voulues pour le titre, le contenu etc
+            $article->setTitle($title);
+            $article->setContent($content);
+            $article->setPublishedAt(new \DateTime('NOW'));
+            $article->setIsPublished(true);
 
-        // j'utilise la classe EntityManagerInterface de Doctrine pour
-        // enregistrer mon entité dans la bdd dans la table article (en
-        // deux étapes avec le persist puis le flush)
-        $entityManager->persist($article);
-        $entityManager->flush();
+            // j'utilise la classe EntityManagerInterface de Doctrine pour
+            // enregistrer mon entité dans la bdd dans la table article (en
+            // deux étapes avec le persist puis le flush)
+            $entityManager->persist($article);
+            $entityManager->flush();
 
-        $this->addFlash('success', 'Vous avez bien ajouté l\'article !');
+            $this->addFlash('success', 'Vous avez bien ajouté l\'article !');
+            return $this->redirectToRoute("admin_articles");
+        }
 
-        return $this->redirectToRoute('admin_articles');
+        $this->addFlash('error', 'Merci de remplir le titre et le contenu !');
+        return $this->render('admin/insert_article.html.twig');
     }
 
     /**
