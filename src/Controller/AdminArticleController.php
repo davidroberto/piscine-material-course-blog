@@ -10,11 +10,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class ArticleController extends AbstractController
+class AdminArticleController extends AbstractController
 {
 
     /**
-     * @Route("/article/{id}", name="article")
+     * @Route("/admin/article/{id}", name="admin_article")
      */
     public function showArticle(ArticleRepository $articleRepository, $id)
     {
@@ -27,20 +27,22 @@ class ArticleController extends AbstractController
         // la méthode permet de récupérer un élément par rapport à son id
         $article = $articleRepository->find($id);
 
-        return $this->render('show_article.html.twig', [
+
+
+        return $this->render('admin/show_article.html.twig', [
             'article' => $article
         ]);
 
     }
 
     /**
-     * @Route("/articles", name="articles")
+     * @Route("/admin/articles", name="admin_articles")
      */
     public function listArticles(ArticleRepository $articleRepository)
     {
         $articles = $articleRepository->findAll();
 
-        return $this->render('list_articles.html.twig', [
+        return $this->render('admin/list_articles.html.twig', [
             'articles' => $articles
         ]);
     }
@@ -48,7 +50,7 @@ class ArticleController extends AbstractController
 
 
     /**
-     * @Route("insert-article", name="insert_article")
+     * @Route("/admin/insert-article", name="admin_insert_article")
      */
     public function insertArticle(EntityManagerInterface $entityManager)
     {
@@ -70,11 +72,13 @@ class ArticleController extends AbstractController
         $entityManager->persist($article);
         $entityManager->flush();
 
-        dump($article); die;
+        $this->addFlash('success', 'Vous avez bien ajouté l\'article !');
+
+        return $this->redirectToRoute('admin_articles');
     }
 
     /**
-     * @Route("/articles/delete/{id}", name="delete_article")
+     * @Route("/admin/articles/delete/{id}", name="admin_delete_article")
      */
     public function deleteArticle($id, ArticleRepository $articleRepository, EntityManagerInterface $entityManager)
     {
@@ -88,15 +92,18 @@ class ArticleController extends AbstractController
             $entityManager->remove($article);
             $entityManager->flush();
 
-            return new Response('supprimé');
+            $this->addFlash('success', 'Vous avez bien supprimé l\'article !');
         } else {
-            return new Response('déjà supprimé');
+            $this->addFlash('error', 'Article introuvable ! ');
+
         }
+
+        return $this->redirectToRoute('admin_articles');
     }
 
 
     /**
-     * @Route("/articles/update/{id}", name="update_article")
+     * @Route("/admin/articles/update/{id}", name="admin_update_article")
      */
     public function updateArticle($id, ArticleRepository $articleRepository, EntityManagerInterface $entityManager)
     {

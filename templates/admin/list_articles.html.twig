@@ -1,6 +1,11 @@
 {% extends 'base.html.twig' %}
 
+
 {% block main %}
+
+<section>
+    <a href="{{ path('admin_insert_article') }}">Ajouter un article</a>
+</section>
 
 <section class="articles">
 
@@ -9,7 +14,8 @@
         {% if article.isPublished %}
             <article class="article">
                 <h1>{{ article.title }}</h1>
-                <a href="{{ path('article', {'id': article.id }) }}">Clique j't'ai dit</a>
+                <a href="{{ path('admin_article', {'id': article.id }) }}">Voir cet article</a>
+                <a href="{{ path('admin_delete_article', {'id': article.id }) }}">Supprimer cet article</a>
             </article>
         {% endif %}
 

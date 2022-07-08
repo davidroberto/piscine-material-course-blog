@@ -44,6 +44,15 @@
     text-align: center;
 }
 
+.message-success {
+    background-color: green;
+}
+
+
+.message-error {
+    background-color: red;
+}
+
 @media screen and (max-width: 640px) {
 
     .articles {
@@ -54,3 +63,4 @@
         width: 100%;
     }
 }
+
