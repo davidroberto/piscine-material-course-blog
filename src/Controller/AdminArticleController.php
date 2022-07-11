@@ -19,15 +19,8 @@ class AdminArticleController extends AbstractController
      */
     public function showArticle(ArticleRepository $articleRepository, $id)
     {
-        // récupérer depuis la base de données un article
-        // en fonction d'un ID
-        // donc SELECT * FROM article where id = xxx
 
-        // la classe Repository me permet de faire des requête SELECT
-        // dans la table associée
-        // la méthode permet de récupérer un élément par rapport à son id
         $article = $articleRepository->find($id);
-
 
         return $this->render('admin/show_article.html.twig', [
             'article' => $article
@@ -90,20 +83,15 @@ class AdminArticleController extends AbstractController
      */
     public function deleteArticle($id, ArticleRepository $articleRepository, EntityManagerInterface $entityManager)
     {
-        // je récupère l'article en fonction de l'id dans l'url
         $article = $articleRepository->find($id);
 
-        // je vérifie que la variable $article ne contient
-        // pas null, donc que l'article existe en bdd
         if (!is_null($article)) {
-            // j'utilise l'entity manager pour supprimer l'article
             $entityManager->remove($article);
             $entityManager->flush();
 
             $this->addFlash('success', 'Vous avez bien supprimé l\'article !');
         } else {
             $this->addFlash('error', 'Article introuvable ! ');
-
         }
 
         return $this->redirectToRoute('admin_articles');
