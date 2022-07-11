@@ -61,6 +61,22 @@ class AdminArticleController extends AbstractController
         // en utilisant le plan du formulaire (ArticleType) et une instance d'Article
         $form = $this->createForm(ArticleType::class, $article);
 
+        // On "donne" à la variable qui contient le formulaire
+        // une instance de la classe  Request
+        // pour que le formulaire puisse récupérer toutes les données
+        // des inputs et faire les setters sur $article automatiquement
+        $form->handleRequest($request);
+
+        // si le formulaire a été posté et que les données sont valides (valeurs
+        // des inputs correspondent à ce qui est attendu en bdd pour la table article)
+        if ($form->isSubmitted() && $form->isValid()) {
+            // alors on enregistre l'article en BDD
+            $entityManager->persist($article);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Article enregistré !');
+        }
+
         // j'affiche mon twig, en lui passant une variable
         // form, qui contient la vue du formulaire, c'est à dire,
         // le résultat de la méthode createView de la variable $form
