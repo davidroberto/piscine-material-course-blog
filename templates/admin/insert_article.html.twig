@@ -2,16 +2,12 @@
 
 {% block main %}
 
-    <form action="{{ path('admin_insert_article') }}" method="get">
+    {#
+       j'utilise la fonction twig form et je lui passe la variable qui contient
+       mon formulaire depuis le controleur
+       ça permet de générer tous les inputs + labels de mon formulaire
+    #}
+    {{ form(form) }}
 
-        <label for="title">Titre</label>
-        <input type="text" name="title">
-
-        <label for="title">Contenu</label>
-        <input type="text" name="content">
-
-        <input type="submit">
-
-    </form>
 {% endblock %}
 

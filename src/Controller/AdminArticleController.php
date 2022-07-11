@@ -4,12 +4,15 @@
 namespace App\Controller;
 
 use App\Entity\Article;
+use App\Form\ArticleType;
 use App\Repository\ArticleRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 class AdminArticleController extends AbstractController
 {
@@ -47,35 +50,23 @@ class AdminArticleController extends AbstractController
      */
     public function insertArticle(EntityManagerInterface $entityManager, Request $request)
     {
-        $title = $request->query->get('title');
-        $content = $request->query->get('content');
+        // je créé une instance de la classe d'entité Article
+        // dans le but de créer un article en BDD
+        $article = new Article();
 
-        if (!empty($title) &&
-            !empty($content)
-        ) {
-            // je créé une instance de la classe Article (classe d'entité)
-            // dans le but de créer un nouvel article dans ma bdd (table article)
-            $article = new Article();
+        // j'ai utilisé en ligne de commandes "php bin/console make:form"
+        // pour que Symfony me créé une classe qui contiendra "le plan", "le patron"
+        // du formulaire pour créer les articles. C'est la classe ArticleType
+        // j'utilise la méthode $this->createForm pour créer un formulaire
+        // en utilisant le plan du formulaire (ArticleType) et une instance d'Article
+        $form = $this->createForm(ArticleType::class, $article);
 
-            // j'utilise les setters du titre, du contenu etc
-            // pour mettre les données voulues pour le titre, le contenu etc
-            $article->setTitle($title);
-            $article->setContent($content);
-            $article->setPublishedAt(new \DateTime('NOW'));
-            $article->setIsPublished(true);
-
-            // j'utilise la classe EntityManagerInterface de Doctrine pour
-            // enregistrer mon entité dans la bdd dans la table article (en
-            // deux étapes avec le persist puis le flush)
-            $entityManager->persist($article);
-            $entityManager->flush();
-
-            $this->addFlash('success', 'Vous avez bien ajouté l\'article !');
-            return $this->redirectToRoute("admin_articles");
-        }
-
-        $this->addFlash('error', 'Merci de remplir le titre et le contenu !');
-        return $this->render('admin/insert_article.html.twig');
+        // j'affiche mon twig, en lui passant une variable
+        // form, qui contient la vue du formulaire, c'est à dire,
+        // le résultat de la méthode createView de la variable $form
+        return $this->render("admin/insert_article.html.twig", [
+            'form' => $form->createView()
+        ]);
     }
 
     /**
