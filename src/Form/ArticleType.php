@@ -17,7 +17,6 @@ class ArticleType extends AbstractType
             ->add('title')
             ->add('content')
             ->add('isPublished')
-            ->add('publishedAt')
             ->add('submit', SubmitType::class)
         ;
     }

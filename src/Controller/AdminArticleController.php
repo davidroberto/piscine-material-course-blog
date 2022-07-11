@@ -7,12 +7,10 @@ use App\Entity\Article;
 use App\Form\ArticleType;
 use App\Repository\ArticleRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\Annotation\Groups;
 
 class AdminArticleController extends AbstractController
 {
@@ -108,16 +106,39 @@ class AdminArticleController extends AbstractController
     /**
      * @Route("/admin/articles/update/{id}", name="admin_update_article")
      */
-    public function updateArticle($id, ArticleRepository $articleRepository, EntityManagerInterface $entityManager)
+    public function updateArticle($id, ArticleRepository $articleRepository, EntityManagerInterface $entityManager, Request $request)
     {
         $article = $articleRepository->find($id);
 
-        $article->setTitle("title updated");
+        // j'ai utilisé en ligne de commandes "php bin/console make:form"
+        // pour que Symfony me créé une classe qui contiendra "le plan", "le patron"
+        // du formulaire pour créer les articles. C'est la classe ArticleType
+        // j'utilise la méthode $this->createForm pour créer un formulaire
+        // en utilisant le plan du formulaire (ArticleType) et une instance d'Article
+        $form = $this->createForm(ArticleType::class, $article);
 
-        $entityManager->persist($article);
-        $entityManager->flush();
+        // On "donne" à la variable qui contient le formulaire
+        // une instance de la classe  Request
+        // pour que le formulaire puisse récupérer toutes les données
+        // des inputs et faire les setters sur $article automatiquement
+        $form->handleRequest($request);
 
-        return new Response('OK');
+        // si le formulaire a été posté et que les données sont valides (valeurs
+        // des inputs correspondent à ce qui est attendu en bdd pour la table article)
+        if ($form->isSubmitted() && $form->isValid()) {
+            // alors on enregistre l'article en BDD
+            $entityManager->persist($article);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Article enregistré !');
+        }
+
+        // j'affiche mon twig, en lui passant une variable
+        // form, qui contient la vue du formulaire, c'est à dire,
+        // le résultat de la méthode createView de la variable $form
+        return $this->render("admin/update_article.html.twig", [
+            'form' => $form->createView()
+        ]);
     }
 
 

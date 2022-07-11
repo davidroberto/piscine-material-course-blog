@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+
+    {#
+       j'utilise la fonction twig form et je lui passe la variable qui contient
+       mon formulaire depuis le controleur
+       ça permet de générer tous les inputs + labels de mon formulaire
+    #}
+    {{ form(form) }}
+
+{% endblock %}
+
