@@ -3,6 +3,9 @@
 {% block main %}
     <article>
         <h2 style="color: {{ category.color }};">{{ category.title }}</h2>
+        {% for article in category.articles %}
+             <p>{{ article.title }}</p>
+        {% endfor %}
     </article>
 {% endblock %}
 

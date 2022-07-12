@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\CategoryRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -26,6 +27,16 @@ class Category
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $color;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Article", mappedBy="category")
+     */
+    private $articles;
+
+    public function __construct()
+    {
+        $this->articles = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -54,5 +65,15 @@ class Category
         $this->color = $color;
 
         return $this;
+    }
+
+    public function getArticles()
+    {
+        return $this->articles;
+    }
+
+    public function setArticles($articles): void
+    {
+        $this->articles = $articles;
     }
 }
