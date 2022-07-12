@@ -51,6 +51,7 @@ class AdminArticleController extends AbstractController
         // je créé une instance de la classe d'entité Article
         // dans le but de créer un article en BDD
         $article = new Article();
+        $article->setPublishedAt(new \DateTime('NOW'));
 
         // j'ai utilisé en ligne de commandes "php bin/console make:form"
         // pour que Symfony me créé une classe qui contiendra "le plan", "le patron"
@@ -141,5 +142,5 @@ class AdminArticleController extends AbstractController
         ]);
     }
 
-    
+
 }
