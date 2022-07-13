@@ -39,9 +39,10 @@ class Article
     private $publishedAt;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="articles")
+     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="articles")
      */
     private $category;
+
 
     public function getId(): ?int
     {
@@ -96,14 +97,16 @@ class Article
         return $this;
     }
 
-    public function getCategory()
+    public function getCategory(): ?Category
     {
         return $this->category;
     }
 
-    public function setCategory($category): void
+    public function setCategory(?Category $category): self
     {
         $this->category = $category;
+
+        return $this;
     }
 
 }
