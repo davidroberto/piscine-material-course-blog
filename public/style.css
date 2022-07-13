@@ -26,10 +26,14 @@
     display: flex;
     margin-left: 10%;
     margin-right: 10%;
+    flex-wrap: wrap;
 }
 
 .article {
     width: 33.33%;
+    border: 1px solid lightgrey;
+    text-align: center;
+    padding: 20px;
 }
 
 .article-img {

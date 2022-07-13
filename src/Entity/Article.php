@@ -5,9 +5,11 @@ namespace App\Entity;
 use App\Repository\ArticleRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=ArticleRepository::class)
+ * @UniqueEntity("title", message="Un article similaire existe déjà. Cordialement")
  */
 class Article
 {
@@ -20,11 +22,13 @@ class Article
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotNull(message="T'as oublié le titre tocard")
      */
     private $title;
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\Length(min=)
      */
     private $content;
 
