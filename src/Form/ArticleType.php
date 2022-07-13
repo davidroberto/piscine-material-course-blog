@@ -26,7 +26,8 @@ class ArticleType extends AbstractType
             // de la bdd avec leur titre dans les options du select
             ->add('category', EntityType::class, [
                 'class' => Category::class,
-                'choice_label' => 'title'
+                'choice_label' => 'title',
+                'placeholder' => 'Choisissez votre catégorie',
             ])
             ->add('submit', SubmitType::class)
         ;

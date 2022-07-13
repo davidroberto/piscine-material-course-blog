@@ -28,7 +28,6 @@ class Article
 
     /**
      * @ORM\Column(type="text")
-     * @Assert\Length(min=)
      */
     private $content;
 
