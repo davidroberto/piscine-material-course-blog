@@ -12,7 +12,7 @@
                 {% else %}
                     <p>Pas de catégorie</p>
                 {% endif %}
-                <a href="{{ path('admin_article', {'id': article.id }) }}">Voir cet article
+                <a href="{{ path('admin_article', {'id': article.id }) }}">Voir cet article</a>
                 <a href="{{ path('admin_update_article', {'id': article.id }) }}">Modifier cet article</a>
                 <a href="{{ path('admin_delete_article', {'id': article.id }) }}">Supprimer cet article</a>
             </article>
