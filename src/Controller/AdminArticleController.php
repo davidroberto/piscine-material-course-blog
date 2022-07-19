@@ -11,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 class AdminArticleController extends AbstractController
 {
@@ -46,7 +47,7 @@ class AdminArticleController extends AbstractController
     /**
      * @Route("/admin/insert-article", name="admin_insert_article")
      */
-    public function insertArticle(EntityManagerInterface $entityManager, Request $request)
+    public function insertArticle(EntityManagerInterface $entityManager, Request $request, SluggerInterface $slugger)
     {
         // je créé une instance de la classe d'entité Article
         // dans le but de créer un article en BDD
@@ -69,6 +70,29 @@ class AdminArticleController extends AbstractController
         // si le formulaire a été posté et que les données sont valides (valeurs
         // des inputs correspondent à ce qui est attendu en bdd pour la table article)
         if ($form->isSubmitted() && $form->isValid()) {
+
+            // je récupère l'image dans le formulaire (l'image est en mapped false donc c'est à moi
+            // de gérer l'upload
+            $image = $form->get('image')->getData();
+
+            // je récupère le nom du fichier original
+            $originalFilename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+
+            // j'utilise une instance de la classe Slugger et sa méthode slug pour
+            // supprimer les caractères spéciaux, espaces etc du nom du fichier
+            $safeFilename = $slugger->slug($originalFilename);
+            // je rajoute au nom de l'image, un identifiant unique (au cas ou
+            // l'image soit uploadée plusieurs fois)
+            $newFilename = $safeFilename.'-'.uniqid().'.'.$image->guessExtension();
+
+            // je déplace l'image dans le dossier public et je la renomme avec le nouveau nom créé
+            $image->move(
+                $this->getParameter('images_directory'),
+                $newFilename
+            );
+
+            $article->setImage($newFilename);
+
             // alors on enregistre l'article en BDD
             $entityManager->persist($article);
             $entityManager->flush();
@@ -127,6 +151,27 @@ class AdminArticleController extends AbstractController
         // si le formulaire a été posté et que les données sont valides (valeurs
         // des inputs correspondent à ce qui est attendu en bdd pour la table article)
         if ($form->isSubmitted() && $form->isValid()) {
+
+            // je récupère l'image dans le formulaire (l'image est en mapped false donc c'est à moi
+            // de gérer l'upload
+            $image = $form->get('image')->getData();
+
+            // je récupère le nom du fichier original
+            $originalFilename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+
+            // j'utilise une instance de la classe Slugger et sa méthode slug pour
+            // supprimer les caractères spéciaux, espaces etc du nom du fichier
+            $safeFilename = $slugger->slug($originalFilename);
+            // je rajoute au nom de l'image, un identifiant unique (au cas ou
+            // l'image soit uploadée plusieurs fois)
+            $newFilename = $safeFilename.'-'.uniqid().'.'.$image->guessExtension();
+
+            // je déplace l'image dans le dossier public et je la renomme avec le nouveau nom créé
+            $image->move(
+                $this->getParameter('images_directory'),
+                $newFilename
+            );
+
             // alors on enregistre l'article en BDD
             $entityManager->persist($article);
             $entityManager->flush();
@@ -138,7 +183,8 @@ class AdminArticleController extends AbstractController
         // form, qui contient la vue du formulaire, c'est à dire,
         // le résultat de la méthode createView de la variable $form
         return $this->render("admin/update_article.html.twig", [
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'article' => $article
         ]);
     }
 

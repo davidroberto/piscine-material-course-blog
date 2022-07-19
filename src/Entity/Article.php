@@ -46,6 +46,10 @@ class Article
      */
     private $category;
 
+    /**
+     * @ORM\Column(type="string")
+     */
+    private $image;
 
     public function getId(): ?int
     {
@@ -111,5 +115,17 @@ class Article
 
         return $this;
     }
+
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    public function setImage($image): void
+    {
+        $this->image = $image;
+    }
+
+
 
 }

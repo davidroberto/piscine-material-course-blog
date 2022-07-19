@@ -51,17 +51,10 @@ class ArticleRepository extends ServiceEntityRepository
         // j'utilise le constructeur de requête
         // pour faire un select sur la table article
         $query = $qb->select('article')
-            // je récupère les article dont le titre
-            // correspond à :word
+            ->leftJoin('article.category', 'category')
             ->where('article.title LIKE :search')
-            // je défini la valeur de :word
-            // en lui disant que le mot, peut contenir des
-            // caractères avant et après, il sera quand meme trouvé
-            // je le fais en deux étapes avec setParametre
-            // ça permet à Doctrine et SF de sécuriser
-            // la variable $word
+            ->orWhere('category.title LIKE :search' )
             ->setParameter('search', '%'.$search.'%')
-            // je récupère la requête générée
             ->getQuery();
 
         // je l'execute en bdd et je récupère les résultats

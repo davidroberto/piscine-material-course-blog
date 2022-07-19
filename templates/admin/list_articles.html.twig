@@ -13,6 +13,7 @@
 
         {% if article.isPublished %}
             <article class="article">
+                <img class="article-img" src="{{ asset('uploads/images/' ~ article.image)  }}" alt="{{ article.title }}">
                 <h1>{{ article.title }}</h1>
                 {% if article.category %}
                     <p>{{ article.category.title }}</p>
