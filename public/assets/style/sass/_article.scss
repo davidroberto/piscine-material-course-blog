@@ -1,0 +1,21 @@
+.articles {
+  display: flex;
+  margin-left: 10%;
+  margin-right: 10%;
+}
+
+.article {
+  width: 33%;
+  padding: 30px;
+  border: 1px dashed blue;
+}
+
+
+@mixin box($theme) {
+  background-color: $theme;
+  color: #fff;
+}
+
+.box-article {
+  @include box($theme: #123467);
+}

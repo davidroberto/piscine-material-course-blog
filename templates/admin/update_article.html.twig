@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'admin/base.html.twig' %}
 
 {% block main %}
 
@@ -26,6 +26,7 @@
             <img class="article-img" src="{{ asset('uploads/images/' ~ article.image)  }}" alt="{{ article.title }}">
         {% endif %}
     </div>
+
     {{ form_label(form.image) }}
     {{ form_widget(form.image) }}
     {{ form_errors(form.image) }}

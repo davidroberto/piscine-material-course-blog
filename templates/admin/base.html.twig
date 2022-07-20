@@ -15,14 +15,14 @@
 <body>
 
 <header class="header-top">
-    <form method="GET" action="{{ path('admin_search_articles') }}">
-        <input type="text" name="search">
-        <input type="submit">
-    </form>
+    <p>Bonjour {{ app.user.email }}</p>
     <ul class="nav-items">
-        <li class="nav-item"><a class="nav-link" href="{{ path('home') }}">Accueil</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ path('admin_articles') }}">Articles</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ path('admin_list_categories') }}">Categories</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ path('app_logout') }}">Déconnexion</a></li>
     </ul>
 </header>
+
 
 {% for message in app.flashes('success') %}
     <p class="message-success">{{ message }}</p>

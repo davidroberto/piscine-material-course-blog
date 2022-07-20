@@ -1,0 +1,22 @@
+.header-top {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border: 1px solid grey;
+  background-color: lightgoldenrodyellow; }
+
+.articles {
+  display: flex;
+  margin-left: 10%;
+  margin-right: 10%; }
+
+.article {
+  width: 33%;
+  padding: 30px;
+  border: 1px dashed blue; }
+
+.box-article {
+  background-color: #123467;
+  color: #fff; }
+
+/*# sourceMappingURL=style.css.map */
