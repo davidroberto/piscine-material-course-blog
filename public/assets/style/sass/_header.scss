@@ -5,3 +5,21 @@
   border: 1px solid grey;
   background-color: lightgoldenrodyellow;
 }
+
+.night-activated {
+  background-color: rgba(0, 0, 0, 0.96);
+}
+
+.night-activated p {
+  color: white;
+}
+
+.night-activated .header-top {
+  background-color: darkgreen;
+}
+
+.night-activated button {
+  background-color: black;
+  border: 1px solid white;
+  color: white;
+}

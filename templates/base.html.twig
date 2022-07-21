@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="{{ asset('assets/style/css/style.css') }}">
 
 </head>
-<body>
+<body class="js-body">
 
 <header class="header-top">
     <form method="GET" action="{{ path('admin_search_articles') }}">
@@ -22,6 +22,7 @@
     <ul class="nav-items">
         <li class="nav-item"><a class="nav-link" href="{{ path('home') }}">Accueil</a></li>
     </ul>
+    <button class="js-night-toggle">Night Mode</button>
 </header>
 
 {% for message in app.flashes('success') %}
@@ -41,9 +42,9 @@
 </main>
 
 <footer>
-    Je suis le footer, je fais du foot
+    <p>Je suis le footer, je fais du foot</p>
 </footer>
-
+<script src="{{ asset('assets/js/main.js') }}"></script>
 </body>
 </html>
 
